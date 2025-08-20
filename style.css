@@ -1,42 +1,50 @@
-/* Mobile Menu Toggle */
-.menu-toggle {
-    display: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-}
-
-/* Updated navigation for mobile */
-@media (max-width: 768px) {
+/* This is a new CSS section for screens wider than 768px */
+@media (min-width: 769px) {
     .header-content {
         flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        gap: 0;
     }
-
+    
     nav {
-        display: none;
-        position: absolute;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
-        backdrop-filter: blur(10px);
-        padding: 20px 0;
-        border-top: 1px solid var(--gray-light);
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
+        display: block;
+        position: static;
+        background-color: transparent;
+        backdrop-filter: none;
+        padding: 0;
+        border-top: none;
     }
-
-    nav.active {
-        display: flex;
+    
+    nav ul {
+        flex-direction: row;
+        gap: 30px;
     }
-
+    
     .menu-toggle {
+        display: none;
+    }
+    
+    .cta-button {
         display: block;
     }
-
-    .cta-button {
-        display: none; /* Hide the main CTA on mobile header */
+    
+    /* Re-enables grid layout for settings and hardware sections */
+    .settings-list, .hardware-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+    }
+    
+    /* Ensures the settings cards are back to the correct layout */
+    .settings-card h4 {
+        text-align: left;
+    }
+    
+    .settings-list li {
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    .settings-list .sensitivity-group {
+        flex-direction: row;
     }
 }

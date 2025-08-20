@@ -1,30 +1,42 @@
-.settings-list li {
-    background-color: var(--gray);
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 1rem;
-    display: flex; /* Added for a cleaner layout */
-    justify-content: space-between; /* Added to space out content */
-    align-items: center; /* Vertically aligns content */
+/* Mobile Menu Toggle */
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+    font-size: 1.5rem;
 }
 
-/* New CSS to handle the sensitivity layout */
-.settings-list .sensitivity-group {
-    display: flex;
-    gap: 15px; /* Adjust spacing between X and Y */
-}
-
-.settings-list .sensitivity-group strong {
-    margin-right: 0;
-}
-
-@media (max-width: 600px) {
-    .settings-list, .hardware-grid {
-        grid-template-columns: 1fr; /* Stacks items on mobile */
-        gap: 20px;
+/* Updated navigation for mobile */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
-    
-    .settings-card h4 {
+
+    nav {
+        display: none;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(10px);
+        padding: 20px 0;
+        border-top: 1px solid var(--gray-light);
+        flex-direction: column;
         text-align: center;
+        gap: 15px;
+    }
+
+    nav.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .cta-button {
+        display: none; /* Hide the main CTA on mobile header */
     }
 }

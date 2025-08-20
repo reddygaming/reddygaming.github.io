@@ -1,0 +1,30 @@
+.settings-list li {
+    background-color: var(--gray);
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    display: flex; /* Added for a cleaner layout */
+    justify-content: space-between; /* Added to space out content */
+    align-items: center; /* Vertically aligns content */
+}
+
+/* New CSS to handle the sensitivity layout */
+.settings-list .sensitivity-group {
+    display: flex;
+    gap: 15px; /* Adjust spacing between X and Y */
+}
+
+.settings-list .sensitivity-group strong {
+    margin-right: 0;
+}
+
+@media (max-width: 600px) {
+    .settings-list, .hardware-grid {
+        grid-template-columns: 1fr; /* Stacks items on mobile */
+        gap: 20px;
+    }
+    
+    .settings-card h4 {
+        text-align: center;
+    }
+}

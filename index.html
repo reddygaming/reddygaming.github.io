@@ -36,7 +36,7 @@
             padding: 0 20px;
         }
         
-        /* Header Styles - Default (Desktop-First) */
+        /* Header Styles */
         header {
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px 0;
@@ -125,25 +125,46 @@
             background-color: var(--primary-light);
         }
 
-        /* Mobile-only hamburger icon */
         .menu-toggle {
             display: none;
             cursor: pointer;
             font-size: 1.5rem;
         }
 
-        /* General Layouts (Desktop-First) */
+        /* General Layouts - DESKTOP */
         .drills-grid, .features-grid, .guide-grid, .hardware-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
+
+        /* FIX: Settings Content - Desktop Layout */
+        .settings-content {
+            display: flex;
+            flex-direction: row; /* Ensure horizontal layout */
+            flex-wrap: wrap; /* Allow wrapping on smaller desktop screens */
+            gap: 20px;
+        }
+
+        .settings-card {
+            background-color: var(--gray-light);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            flex: 1 1 calc(50% - 20px); /* Distribute space evenly on desktop */
+            min-width: 300px;
+        }
+
+        .settings-card:hover {
+            transform: scale(1.02);
+        }
         
         .settings-list {
             list-style: none;
             padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 15px;
         }
         
@@ -157,8 +178,9 @@
             align-items: center;
         }
         
-        .settings-card h4 {
-            text-align: left;
+        .settings-list .sensitivity-group {
+            display: flex;
+            gap: 15px;
         }
 
         /* Hero Section */
@@ -280,25 +302,6 @@
             display: block;
         }
         
-        .settings-content {
-            background-color: var(--gray);
-            padding: 30px;
-            border-radius: 10px;
-        }
-        
-        .settings-card {
-            background-color: var(--gray-light);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s;
-        }
-        
-        .settings-card:hover {
-            transform: scale(1.02);
-        }
-        
         .settings-card h4 {
             color: var(--primary);
             margin-bottom: 10px;
@@ -311,11 +314,6 @@
         .settings-list li strong {
             color: var(--primary-light);
             margin-right: 5px;
-        }
-        
-        .settings-list .sensitivity-group {
-            display: flex;
-            gap: 15px;
         }
         
         /* Guides Section */
@@ -339,13 +337,7 @@
             margin-bottom: 15px;
             text-align: center;
         }
-
-        .guide-card ul {
-            list-style-type: none;
-            padding: 0;
-            text-align: left;
-        }
-
+        
         .guide-card li {
             margin-bottom: 10px;
             color: #ccc;
@@ -511,6 +503,17 @@
             
             .hero h1 {
                 font-size: 2.5rem;
+            }
+            
+            /* FIX: Resetting display properties for mobile */
+            .settings-content {
+                flex-direction: column; /* Stacks cards on mobile */
+                gap: 10px;
+            }
+
+            .settings-card {
+                flex: none; /* Disables flex sizing on mobile */
+                width: 100%; /* Makes cards full-width */
             }
             
             .settings-tabs {

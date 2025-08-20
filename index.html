@@ -299,13 +299,22 @@
             padding: 15px;
             border-radius: 5px;
             font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .settings-list li strong {
             color: var(--primary-light);
             margin-right: 5px;
         }
-
+        
+        /* New styling for a cleaner look */
+        .settings-list .sensitivity-group {
+            display: flex;
+            gap: 15px;
+        }
+        
         /* Guides Section */
         .guide-grid {
             display: grid;
@@ -483,6 +492,27 @@
             
             .settings-tabs {
                 flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .settings-list, .hardware-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .settings-card h4 {
+                text-align: center;
+            }
+            
+            .settings-list li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .settings-list .sensitivity-group {
+                flex-direction: column;
+                gap: 5px;
             }
         }
     </style>
@@ -674,7 +704,10 @@
                         <h4>Peterbot</h4>
                         <ul class="settings-list">
                             <li><strong>DPI:</strong> 800</li>
-                            <li><strong>In-Game Sens:</strong> 8.0% X / 8.0% Y</li>
+                            <li class="sensitivity-group">
+                                <strong>In-Game Sens:</strong>
+                                <span>8.0% X / 8.0% Y</span>
+                            </li>
                             <li><strong>ADS Sens:</strong> 40.0%</li>
                             <li><strong>Keybinds:</strong> Wall: V, Ramp: F, Floor: R, Cone: C, Edit: Left Shift</li>
                         </ul>
@@ -683,7 +716,10 @@
                         <h4>Sensing</h4>
                         <ul class="settings-list">
                             <li><strong>DPI:</strong> 800</li>
-                            <li><strong>In-Game Sens:</strong> 8.0% X / 8.0% Y</li>
+                            <li class="sensitivity-group">
+                                <strong>In-Game Sens:</strong>
+                                <span>8.0% X / 8.0% Y</span>
+                            </li>
                             <li><strong>ADS Sens:</strong> 30.0%</li>
                             <li><strong>Keybinds:</strong> Wall: C, Ramp: E, Floor: Q, Cone: L-Shift, Edit: F</li>
                         </ul>
@@ -695,8 +731,14 @@
                     <div class="settings-card">
                         <h4>DeRoller</h4>
                         <ul class="settings-list">
-                            <li><strong>Look Sens:</strong> 48% Horizontal / 48% Vertical</li>
-                            <li><strong>ADS Sens:</strong> 10% Horizontal / 10% Vertical</li>
+                            <li class="sensitivity-group">
+                                <strong>Look Sens:</strong>
+                                <span>48% Horizontal / 48% Vertical</span>
+                            </li>
+                            <li class="sensitivity-group">
+                                <strong>ADS Sens:</strong>
+                                <span>10% Horizontal / 10% Vertical</span>
+                            </li>
                             <li><strong>Build Multiplier:</strong> 2.0x</li>
                             <li><strong>Button Layout:</strong> Custom (Edit: L-Stick, Jump: R-Stick)</li>
                         </ul>
@@ -704,8 +746,14 @@
                     <div class="settings-card">
                         <h4>Vadeal</h4>
                         <ul class="settings-list">
-                            <li><strong>Look Sens:</strong> 45% Horizontal / 45% Vertical</li>
-                            <li><strong>ADS Sens:</strong> 11% Horizontal / 11% Vertical</li>
+                            <li class="sensitivity-group">
+                                <strong>Look Sens:</strong>
+                                <span>45% Horizontal / 45% Vertical</span>
+                            </li>
+                            <li class="sensitivity-group">
+                                <strong>ADS Sens:</strong>
+                                <span>11% Horizontal / 11% Vertical</span>
+                            </li>
                             <li><strong>Build Multiplier:</strong> 2.1x</li>
                             <li><strong>Button Layout:</strong> Custom (Edit: L-Stick, Jump: A)</li>
                         </ul>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latency Reduction Guide - ReddyGaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00cc66;
+            --primary-dark: #00994d;
+            --primary-light: #33ff99;
+            --dark: #121212;
+            --light: #f5f5f5;
+            --gray: #333333;
+            --gray-light: #444444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: var(--dark);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: var(--dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-light);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* Guide Page Specific Styles */
+        .guide-section {
+            padding: 80px 0;
+            background-color: var(--dark);
+        }
+
+        .guide-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .guide-header h1 {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        .guide-header p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .guide-content {
+            background-color: var(--gray);
+            padding: 40px;
+            border-radius: 10px;
+        }
+
+        .guide-content h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary-dark);
+            padding-bottom: 5px;
+        }
+
+        .guide-content h3 {
+            font-size: 1.5rem;
+            color: var(--primary-light);
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        
+        .guide-content p, .guide-content li {
+            color: #ddd;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .guide-content ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .guide-content ul li::before {
+            content: '\2022';
+            color: var(--primary);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        .guide-image {
+            width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            nav {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+                padding: 20px 0;
+                border-top: 1px solid var(--gray-light);
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            nav.active {
+                display: flex;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .cta-button {
+                display: none;
+            }
+            
+            nav .cta-button {
+                display: block;
+                margin-top: 15px;
+            }
+
+            .guide-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .guide-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">R</div>
+                <div class="logo-text">ReddyGaming</div>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html#drills">Drills</a></li>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#settings">Pro Settings</a></li>
+                    <li><a href="index.html#guides">Guides</a></li>
+                    <li><a href="index.html#hardware">Hardware</a></li>
+                </ul>
+                <button class="cta-button">Get Started</button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="guide-section">
+        <div class="container">
+            <div class="guide-header">
+                <h1>Latency Reduction Guide</h1>
+                <p>Reduce your ping and network latency in Fortnite to achieve a smoother, more responsive gaming experience. Lower latency means your actions register faster on the server, giving you a competitive edge.</p>
+            </div>
+            <div class="guide-content">
+                <h2>1. Connection Type</h2>
+                <p>The type of connection you use is the most critical factor for latency. A wired connection will almost always outperform a wireless one.</p>
+                <ul>
+                    <li><strong>Use an Ethernet Cable:</strong> Connect your PC or console directly to your router with an Ethernet cable. This eliminates interference and provides a stable, low-latency connection.</li>
+                    <li><strong>Avoid Wi-Fi:</strong> Wireless signals are susceptible to interference from other devices and physical objects, which can cause lag spikes and packet loss.</li>
+                </ul>
+
+                <h2>2. Optimize Your Network</h2>
+                <p>Ensure your network is not being clogged by other devices or applications.</p>
+                <ul>
+                    <li><strong>Limit Network Usage:</strong> Close any applications that are downloading, streaming, or updating in the background (e.g., Netflix, YouTube, Steam downloads).</li>
+                    <li><strong>Disconnect Other Devices:</strong> Disconnect other devices on your network that aren't in use, such as smartphones, tablets, or smart TVs.</li>
+                    <li><strong>Quality of Service (QoS):</strong> Check your router settings for a QoS feature. This allows you to prioritize gaming traffic over other network activities.</li>
+                </ul>
+
+                <h2>3. DNS & Server Selection</h2>
+                <p>Choosing the right DNS server can sometimes lower your ping by finding a more direct route to the game server.</p>
+                <ul>
+                    <li><strong>Use a Public DNS:</strong> Switching to a faster DNS server like Google DNS (8.8.8.8, 8.8.4.4) or Cloudflare (1.1.1.1) can reduce latency in some cases.</li>
+                    <li><strong>Select the Closest Server:</strong> In Fortnite's settings, make sure your region is set to the server closest to your physical location. For example, if you live on the East Coast of the US, select the NAE server.</li>
+                </ul>
+
+                <h2>4. Final Tips</h2>
+                <ul>
+                    <li><strong>Reboot Your Router:</strong> A simple network reboot can resolve many common latency issues. Unplug your router for 30 seconds and then plug it back in.</li>
+                    <li><strong>Update Your Router's Firmware:</strong> Check your router manufacturer's website for firmware updates. These can sometimes include performance improvements.</li>
+                    <li><strong>Contact Your ISP:</strong> If you've tried everything and still have high ping, there may be an issue with your Internet Service Provider's network. Contact them to check for service issues in your area.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ReddyGaming</h3>
+                    <p>Become the Fortnite player you've always wanted to be with our expert training guides and optimization tips.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html#drills">Training Drills</a></li>
+                        <li><a href="index.html#features">Performance Guides</a></li>
+                        <li><a href="index.html#settings">Pro Settings</a></li>
+                        <li><a href="#">Premium Courses</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ReddyGaming. All rights reserved. This site is not affiliated with Epic Games or Fortnite.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // CTA button click handler
+            document.querySelectorAll('.cta-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    alert('Welcome to ReddyGaming! Training programs coming soon.');
+                });
+            });
+
+            // Script to handle mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.querySelector('nav');
+            
+            menuToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+            });
+            
+            // Close menu on link click (for better mobile UX)
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPS Optimization Guide - ReddyGaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00cc66;
+            --primary-dark: #00994d;
+            --primary-light: #33ff99;
+            --dark: #121212;
+            --light: #f5f5f5;
+            --gray: #333333;
+            --gray-light: #444444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: var(--dark);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: var(--dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-light);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* Guide Page Specific Styles */
+        .guide-section {
+            padding: 80px 0;
+            background-color: var(--dark);
+        }
+
+        .guide-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .guide-header h1 {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        .guide-header p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .guide-content {
+            background-color: var(--gray);
+            padding: 40px;
+            border-radius: 10px;
+        }
+
+        .guide-content h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary-dark);
+            padding-bottom: 5px;
+        }
+
+        .guide-content h3 {
+            font-size: 1.5rem;
+            color: var(--primary-light);
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        
+        .guide-content p, .guide-content li {
+            color: #ddd;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .guide-content ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .guide-content ul li::before {
+            content: '\2022';
+            color: var(--primary);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        .guide-image {
+            width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            nav {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+                padding: 20px 0;
+                border-top: 1px solid var(--gray-light);
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            nav.active {
+                display: flex;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .cta-button {
+                display: none;
+            }
+            
+            nav .cta-button {
+                display: block;
+                margin-top: 15px;
+            }
+
+            .guide-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .guide-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">R</div>
+                <div class="logo-text">ReddyGaming</div>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html#drills">Drills</a></li>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#settings">Pro Settings</a></li>
+                    <li><a href="index.html#guides">Guides</a></li>
+                    <li><a href="index.html#hardware">Hardware</a></li>
+                </ul>
+                <button class="cta-button">Get Started</button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="guide-section">
+        <div class="container">
+            <div class="guide-header">
+                <h1>FPS Optimization Guide</h1>
+                <p>Maximize your Frames Per Second (FPS) in Fortnite to ensure a smooth and responsive gaming experience. A higher FPS allows you to react faster and gives you a significant competitive advantage.</p>
+            </div>
+            <div class="guide-content">
+                <h2>1. In-Game Settings</h2>
+                <p>Start with the in-game settings. Lowering these can provide a massive boost to your FPS without a significant visual impact.</p>
+                <ul>
+                    <li><strong>Display Mode:</strong> Fullscreen is essential for the best performance.</li>
+                    <li><strong>Resolution:</strong> Keep this at your monitor's native resolution.</li>
+                    <li><strong>Frame Rate Limit:</strong> Set this to a value higher than your monitor's refresh rate (e.g., 144Hz monitor should be set to 160 FPS or uncapped).</li>
+                    <li><strong>Graphics Quality Presets:</strong> Set to 'Low' or 'Performance'.</li>
+                    <li><strong>3D Resolution:</strong> Keep at 100% if possible. Lowering this can improve FPS but will make your game look blurry.</li>
+                    <li><strong>View Distance:</strong> 'Near' or 'Medium' is usually sufficient.</li>
+                    <li><strong>Textures:</strong> 'Low' or 'Medium'.</li>
+                    <li><strong>Effects & Post Processing:</strong> 'Low' or 'Off'.</li>
+                    <li><strong>Show FPS:</strong> Enable this to monitor your performance.</li>
+                </ul>
+                
+                <h2>2. Windows Settings</h2>
+                <p>Optimizing your operating system can free up valuable resources for your game.</p>
+                <ul>
+                    <li><strong>Game Mode:</strong> Turn this ON in Windows Settings.</li>
+                    <li><strong>Background Apps:</strong> Turn OFF "Let apps run in the background".</li>
+                    <li><strong>Power Plan:</strong> Set to 'High Performance' in Power & sleep settings.</li>
+                    <li><strong>Startup Apps:</strong> Disable unnecessary programs from running when you start your PC.</li>
+                    <li><strong>Graphics Settings:</strong> Add Fortnite to this list and set it to 'High performance'.</li>
+                </ul>
+
+                <h2>3. Graphics Card Drivers & Settings</h2>
+                <p>Outdated drivers can cause performance issues and instability. Keeping them updated is crucial.</p>
+                <img src="https://i.imgur.com/Gj8wH1d.png" alt="NVIDIA Control Panel Settings" class="guide-image">
+                <ul>
+                    <li><strong>Update Drivers:</strong> Regularly update your NVIDIA, AMD, or Intel graphics drivers.</li>
+                    <li><strong>NVIDIA Control Panel Settings:</strong>
+                        <ul>
+                            <li><strong>Adjust image settings with preview:</strong> Use the advanced 3D image settings.</li>
+                            <li><strong>Manage 3D settings:</strong> Set 'Power management mode' to 'Prefer maximum performance'.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>4. Final Tips</h2>
+                <ul>
+                    <li><strong>Close Other Programs:</strong> Close any browser tabs, Discord, or other applications you aren't actively using.</li>
+                    <li><strong>Overclocking:</strong> If you're comfortable with it, safely overclocking your GPU and CPU can provide a performance boost.</li>
+                    <li><strong>Upgrade Hardware:</strong> If you have an older system, the most significant FPS increase will come from upgrading your CPU, GPU, or RAM.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ReddyGaming</h3>
+                    <p>Become the Fortnite player you've always wanted to be with our expert training guides and optimization tips.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html#drills">Training Drills</a></li>
+                        <li><a href="index.html#features">Performance Guides</a></li>
+                        <li><a href="index.html#settings">Pro Settings</a></li>
+                        <li><a href="#">Premium Courses</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ReddyGaming. All rights reserved. This site is not affiliated with Epic Games or Fortnite.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // CTA button click handler
+            document.querySelectorAll('.cta-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    alert('Welcome to ReddyGaming! Training programs coming soon.');
+                });
+            });
+
+            // Script to handle mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.querySelector('nav');
+            
+            menuToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+            });
+            
+            // Close menu on link click (for better mobile UX)
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
